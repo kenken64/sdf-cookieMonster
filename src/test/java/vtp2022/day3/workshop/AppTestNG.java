@@ -6,12 +6,14 @@ import vtp2022.day4.server.Cookie;
 
 import org.testng.annotations.BeforeTest;
 import org.testng.annotations.AfterTest;
+import org.testng.Assert;
 
 public class AppTestNG {
   @Test
   public void testCookie() {
-    Cookie
+    String randomCookie = Cookie
       .getRandomCookie("/Users/kennethphang/Projects/cookie-monster/cookie_file.txt");
+    Assert.assertNull(randomCookie);
   }
   
   @BeforeTest
