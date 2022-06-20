@@ -7,18 +7,27 @@ import java.io.InputStream;
 import java.io.OutputStream;
 import java.net.ServerSocket;
 import java.net.Socket;
+import java.nio.file.FileAlreadyExistsException;
+import java.util.Arrays;
+import java.util.List;
+import java.util.stream.Collectors;
 
 public class ServerApp {
-    
-    public static void main(String[] args){
+
+    public static long fib(long n) {
+        if ((n == 0) || (n == 1))
+           return n;
+        else
+           return fib(n - 1) + fib(n - 2);
+     }
+
+    public static void main(String[] args) {
         // retrieve server port number from the first argument
         String serverPort = args[0];
         // retrieve cookie file from the second argument
         String cookieFilePath = args[1];
-        
+
         try {
-            System.out.printf("Cookie Server Started at %s\n", serverPort);
-        
             // Instantiate the server socket class along with the port number
             ServerSocket server = new ServerSocket(Integer.parseInt(serverPort));
             // Waiting for connection from the client side
@@ -32,17 +41,17 @@ public class ServerApp {
 
             String requestFromClient = dis.readUTF();
             System.out.printf("Received request from client : %s\n ", requestFromClient);
-            
-            if(requestFromClient.equals("get-cookie")){
+
+            if (requestFromClient.equals("get-cookie")) {
                 System.out.printf("file -> %s\n", cookieFilePath);
-                
+
                 String randomCookie = Cookie.getRandomCookie(cookieFilePath);
                 System.out.println(randomCookie);
-                dos.writeUTF("cookie-text "+randomCookie);
-            }else{
+                dos.writeUTF("cookie-text " + randomCookie);
+            } else {
                 dos.writeUTF("Invalid command !");
-            }   
-            
+            }
+
             is.close();
             os.close();
 
@@ -51,6 +60,6 @@ public class ServerApp {
             e.printStackTrace();
         } catch (IOException e) {
             e.printStackTrace();
-        } 
-    }   
+        }
+    }
 }
